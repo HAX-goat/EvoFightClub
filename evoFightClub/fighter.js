@@ -69,6 +69,7 @@ function fighter_getAttacked(opposingArms){
 	rngNum = Math.floor(rngNum);
 	if(rngNum > this.getStat('dodge')){
 		this.currHp -= opposingArms.getDamage();
+		console.log();
 	} else {
 		console.log(' * '+this.name+' dodged! * ')
 	}
