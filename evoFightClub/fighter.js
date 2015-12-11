@@ -68,7 +68,7 @@ function fighter_getStat(what){
 }
 
 function fighter_getAttacked(opposingArms){
-	var rngNum = random.integer(0, 99);
+	var rngNum = random.integer(1, 100);
 	if(rngNum > this.getStat('dodge')){
 		this.currHp -= opposingArms.getDamage();
 		console.log();

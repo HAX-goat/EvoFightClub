@@ -89,9 +89,7 @@ function bp_util_breed(pOne, pTwo){
 }
 function bp_util_mixNames(parentOne, parentTwo){
 	//decide new length
-	sleep.sleep(1);
-	var goFirst = random.integer(0, 9999);
-	var oneFirst = goFirst % 2 == 1;
+	var oneFirst = random.bool(50);
 	var numberONE = oneFirst ? parentOne : parentTwo;
 	var numberTWO = oneFirst ? parentTwo : parentOne;
 	var kidLength = Math.max(numberONE.getStat('name').length, numberTWO.getStat('name').length);

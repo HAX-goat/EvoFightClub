@@ -22,7 +22,7 @@ function head_getReflexes(){
 function head_breed(parentsAverageScore){
 	// should return a head with score of approx. parentsAverageScore
 	// so, change reflexes by doing 
-	if((random.integer(0,99)) % 2 === 0){ // +
+	if(random.bool(50)){ // +
 		this.reflexes = parentsAverageScore*(this.BASE/2) + (random.integer(0,this.BASE/2));
 	} else {						// -
 		this.reflexes = parentsAverageScore*(this.BASE/2) - (random.integer(0,this.BASE/2));

@@ -21,7 +21,7 @@ function arm_getDamage(){
 function arm_breed(parentsAverageScore){
 	// should return an arm with score of approx. parentsAverageScore
 	// so, change damage by doing 
-	if((random.integer(0,99)) % 2 === 0){ // +
+	if(random.bool(50)){ // +
 		this.damage = parentsAverageScore*(this.BASE/2) + (random.integer(0,this.BASE/2));
 	} else {						// -
 		this.damage = parentsAverageScore*(this.BASE/2) - (random.integer(0,this.BASE/2));

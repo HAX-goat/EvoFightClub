@@ -22,7 +22,7 @@ function body_getScore(){
 function body_breed(parentsAverageScore){
 	// should return a body with score of approx. parentsAverageScore
 	// so, change hp by doing 
-	if((random.integer(0,99)) % 2 === 0){ // +
+	if(random.bool(50)){ // +
 		this.health = parentsAverageScore*(this.BASE/2) + (random.integer(0,this.BASE/2));
 	} else {						// -
 		this.health = parentsAverageScore*(this.BASE/2) - (random.integer(0,this.BASE/2));
