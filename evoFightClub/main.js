@@ -79,8 +79,18 @@ function getStarted(game){
   }
   if(fighters.length <= 1){
     if(currGen > genGap){
-      console.log('All done! :D');
+      console.log('**************');
+      console.log('*HALL OF FAME*');
+      console.log('**************');
+      console.log('--------------');
+      for(var i = 0; i < pastWinners.length; i++){
+        console.log('Gen '+i+': '+pastWinners[i].getStat('name'));
+        console.log('--------------');
+      }
+      console.log();
+      console.log();
       restart();
+      return;
     }
     currGen++;
     
@@ -104,6 +114,7 @@ function util_clearConsole(){
       console.log('\r\n');
   }
 }
+var pastWinners = new Array();
 function runTurn(){
   var stat = currFight.status();
   if(stat.one.getStat('hp') <= 0 || stat.two.getStat('hp') <= 0){
@@ -113,6 +124,12 @@ function runTurn(){
     console.log('Victory!! Fighter '+ winner.getStat('name')  +' won in round ' + stat.round);
     clearInterval(currInterval);
     breedingPool.addFighter(loser);
+    if(fighters.length == 0){
+      breedingPool.push(winner);
+      pastWinners.push(winner);
+    } else {
+      fighters.push(winner);
+    }
     getStarted(currGen);
     return;
   }
