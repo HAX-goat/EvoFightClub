@@ -1,0 +1,21 @@
+{
+  "name": "evo-fightclub",
+  "description": "Evolutionary Fight Club in JS",
+  "version": "0.1.0",
+  "dependencies": {
+    "console.table": "0.4.0",
+    "prompt": "0.2.14"
+  },
+  "repositories": [
+    {
+      "type": "git",
+      "url": "https://github.com/HAX-goat/EvoFightClub.git"
+    }
+  ],
+  "licenses": [
+    {
+      "name": "BSD",
+      "url": "https://github.com/HAX-goat/EvoFightClub/blob/master/LICENSE"
+    }
+  ]
+}
