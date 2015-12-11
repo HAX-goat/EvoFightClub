@@ -33,6 +33,7 @@ function fighter_getInfo(){
 		currentHealth: this.currHp,
 		damage: this.arms.getDamage(),
 		speed: this.legs.getSpeed(),
+		dodgePercent: this.head.getReflexes(),
 		totalScore: this.score,
 		generation: this.generation
 	 };
