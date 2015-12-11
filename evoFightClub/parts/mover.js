@@ -1,7 +1,12 @@
+var Random = require("random-js");
+var random = new Random(Random.engines.mt19937().autoSeed());
+
+
+
 function Mover(name){
 	this.BASE = 5;
 	this.name = name;
-	this.speed = Math.random() * this.BASE; 
+	this.speed = random.integer(1, this.BASE); 
 	this.speed += 1;				// standard legs has 1-5 speed-value
 	this.score = (this.speed/(this.BASE/2));  // score is speed/2.5
 }
@@ -18,10 +23,10 @@ function mover_getScore(){
 function mover_breed(parentsAverageScore){
 	// should return a mover with score of approx. parentsAverageScore
 	// so, change speed by doing 
-	if((Math.random() * 100) % 2 === 0){ // +
-		this.speed = parentsAverageScore*(this.BASE/2) + (Math.random() * (this.BASE/2));
+	if((random.integer(0,99)) % 2 === 0){ // +
+		this.speed = parentsAverageScore*(this.BASE/2) + (random.integer(0,this.BASE/2));
 	} else {						// -
-		this.speed = parentsAverageScore*(this.BASE/2) - (Math.random() * (this.BASE/2));
+		this.speed = parentsAverageScore*(this.BASE/2) - (random.integer(0,this.BASE/2));
 	}
 	this.score = this.speed/(this.BASE/2);
 }

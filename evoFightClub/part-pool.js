@@ -6,6 +6,8 @@ var sleep = require('sleep');
 var Fighter = require('./fighter').Fighter;
 
 var Head = require('./parts/head').Head;
+var Random = require("random-js");
+var random = new Random(Random.engines.mt19937().autoSeed());
 
 var util = require('util');
 
@@ -88,7 +90,7 @@ function bp_util_breed(pOne, pTwo){
 function bp_util_mixNames(parentOne, parentTwo){
 	//decide new length
 	sleep.sleep(1);
-	var goFirst = Math.random() * 10000;
+	var goFirst = random.integer(0, 9999);
 	var oneFirst = goFirst % 2 == 1;
 	var numberONE = oneFirst ? parentOne : parentTwo;
 	var numberTWO = oneFirst ? parentTwo : parentOne;

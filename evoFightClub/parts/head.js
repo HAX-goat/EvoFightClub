@@ -1,7 +1,11 @@
+var Random = require("random-js");
+var random = new Random(Random.engines.mt19937().autoSeed());
+
+
 function Head(name){
 	this.BASE = 15;
 	this.name = name;
-	this.reflexes = Math.random() * this.BASE; 
+	this.reflexes = random.integer(1, this.BASE); 
 	this.reflexes += 1;				// standard arms deals 1-10 damage
 	this.score = this.reflexes/(this.BASE/2);		// score is (damage/5)
 }
@@ -18,10 +22,10 @@ function head_getReflexes(){
 function head_breed(parentsAverageScore){
 	// should return a head with score of approx. parentsAverageScore
 	// so, change reflexes by doing 
-	if((Math.random() * 100) % 2 === 0){ // +
-		this.reflexes = parentsAverageScore*(this.BASE/2) + (Math.random() * (this.BASE/2));
+	if((random.integer(0,99)) % 2 === 0){ // +
+		this.reflexes = parentsAverageScore*(this.BASE/2) + (random.integer(0,this.BASE/2));
 	} else {						// -
-		this.reflexes = parentsAverageScore*(this.BASE/2) - (Math.random() * (this.BASE/2));
+		this.reflexes = parentsAverageScore*(this.BASE/2) - (random.integer(0,this.BASE/2));
 	}
 	this.score = this.reflexes/(this.BASE/2);
 }

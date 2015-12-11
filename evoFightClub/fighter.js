@@ -2,6 +2,8 @@ var Arm = require('./parts/arms').Arm;
 var Body = require('./parts/body').Body;
 var Mover = require('./parts/mover').Mover;
 var Head = require('./parts/head').Head;
+var Random = require("random-js");
+var random = new Random(Random.engines.mt19937().autoSeed());
 
 function Fighter(name, arm, body, mover, head, generation){
 	this.name = name;
@@ -66,8 +68,7 @@ function fighter_getStat(what){
 }
 
 function fighter_getAttacked(opposingArms){
-	var rngNum = Math.random() * 100;
-	rngNum = Math.floor(rngNum);
+	var rngNum = random.integer(0, 99);
 	if(rngNum > this.getStat('dodge')){
 		this.currHp -= opposingArms.getDamage();
 		console.log();

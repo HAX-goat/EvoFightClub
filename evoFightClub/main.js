@@ -13,6 +13,8 @@ var maxFighters = -1;
 require('console.table');
 var currentPool = new Array();
 var nextPool = new Array();
+var Random = require("random-js");
+var random = new Random(Random.engines.mt19937().autoSeed());
 
 
 
