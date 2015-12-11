@@ -1,4 +1,4 @@
-Todo before I'm satisfied:
+Todo before I'm satisfied (in no particular order):
 
 * Actual GUI (probably web-based)
   * Avatar-generation for fighters
@@ -11,4 +11,4 @@ Todo before I'm satisfied:
 * Integrate into IM-services
   * IRC
   * Any others?
-    * Betting on fighters!
+* Betting on fighters!
