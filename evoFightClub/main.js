@@ -101,6 +101,7 @@ function getStarted(game){
     }
     if(nextPool.length == 1){
       breedingPool.addFighter(nextPool[0]);
+      nextPool = new Array();
       currGen++;
     
       //bring in the kids!

@@ -21,8 +21,9 @@ var fighters = new Array();
 //var breedingPool = new (require('./part-pool')).BreedingPool();
 var Fightr = require('./fighter').Fighter;
 function FightClub(fighterOne, fighterTwo){
-	this.fighterOne = fighterOne.reset();
-	this.fighterTwo = fighterTwo.reset();
+	var oneFaster = fighterOne.getStat('speed') > fighterTwo.getStat('speed');
+	this.fighterOne = oneFaster ? fighterOne.reset() : fighterTwo.reset();
+	this.fighterTwo = oneFaster ? fighterTwo.reset() : fighterOne.reset();
 	this.round = 1;
 	this.turn = 0;
 }

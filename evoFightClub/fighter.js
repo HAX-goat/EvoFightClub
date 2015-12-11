@@ -38,16 +38,18 @@ function fighter_getInfo(){
 
 function fighter_getStat(what){
 	switch(what){
+		case 'gen':
+			return this.generation;
 		case 'victories':
 			return this.victories;
 		case 'name':
 			return this.name;
 		case 'arms':
-			return this.arms.getName();
+			return this.arms;
 		case 'body':
-			return this.body.getName();
+			return this.body;
 		case 'legs':
-			return this.legs.getName();
+			return this.legs;
 		case 'hp':
 			return this.currHp;
 		case 'all':

@@ -2,7 +2,7 @@
 var Arm = require('./parts/arms').Arm;
 var Body = require('./parts/body').Body;
 var Mover = require('./parts/mover').Mover;
-
+var sleep = require('sleep');
 var Fighter = require('./fighter').Fighter;
 
 var util = require('util');
@@ -69,22 +69,27 @@ function bp_stealKid(){
 function bp_util_breed(pOne, pTwo){
 	var kidName = bp_util_mixNames(pOne, pTwo);
 	var kidArm = new Arm(kidName);
-	var pArmAvg = (pOne.arms.getScore() + pTwo.arms.getScore())/2;
+	var pArmAvg = (pOne.getStat('arms').getScore() + pTwo.getStat('arms').getScore())/2;
 	kidArm.breed(pArmAvg);
 	var kidBdy = new Body(kidName);
-	var pBdyAvg = (pOne.body.getScore() + pTwo.body.getScore())/2;
+	var pBdyAvg = (pOne.getStat('body').getScore() + pTwo.getStat('body').getScore())/2;
 	kidBdy.breed(pBdyAvg);
 	var kidLeg = new Mover(kidName);
-	var pLegAvg = (pOne.legs.getScore() + pTwo.legs.getScore())/2;
+	var pLegAvg = (pOne.getStat('legs').getScore() + pTwo.getStat('legs').getScore())/2;
 	kidLeg.breed(pLegAvg);
-	var kid = new Fighter(kidName, kidArm, kidBdy, kidLeg, (Math.max(pOne.gen, pTwo.gen)+1));
+	var kid = new Fighter(kidName, kidArm, kidBdy, kidLeg, (Math.max(pOne.getStat('gen'), pTwo.getStat('gen'))+1));
 	return kid;
 }
 function bp_util_mixNames(parentOne, parentTwo){
 	//decide new length
-	var kidLength = Math.max(parentOne.name.length, parentTwo.name.length);
-	var kidName = parentOne.name.substr(0, Math.min((kidLength/2), parentOne.name.length));
-	kidName += parentTwo.name.substr(Math.min((kidLength/2), (parentTwo.name.length/2)));
+	sleep.sleep(1);
+	var goFirst = Math.random() * 10000;
+	var oneFirst = goFirst % 2 == 1;
+	var numberONE = oneFirst ? parentOne : parentTwo;
+	var numberTWO = oneFirst ? parentTwo : parentOne;
+	var kidLength = Math.max(numberONE.getStat('name').length, numberTWO.getStat('name').length);
+	var kidName = numberONE.getStat('name').substr(0, Math.min((kidLength/2), numberONE.getStat('name').length));
+	kidName += numberTWO.getStat('name').substr(Math.min((kidLength/2), (numberTWO.getStat('name').length/2)));
 	return kidName;
 }
 

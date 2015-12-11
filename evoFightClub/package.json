@@ -4,7 +4,8 @@
   "version": "0.1.0",
   "dependencies": {
     "console.table": "0.4.0",
-    "prompt": "0.2.14"
+    "prompt": "0.2.14",
+    "sleep": "^3.0.0"
   },
   "repositories": [
     {
