@@ -5,6 +5,8 @@ var Mover = require('./parts/mover').Mover;
 var sleep = require('sleep');
 var Fighter = require('./fighter').Fighter;
 
+var Head = require('./parts/head').Head;
+
 var util = require('util');
 
 function BreedingPool(max){ 
@@ -77,7 +79,10 @@ function bp_util_breed(pOne, pTwo){
 	var kidLeg = new Mover(kidName);
 	var pLegAvg = (pOne.getStat('legs').getScore() + pTwo.getStat('legs').getScore())/2;
 	kidLeg.breed(pLegAvg);
-	var kid = new Fighter(kidName, kidArm, kidBdy, kidLeg, (Math.max(pOne.getStat('gen'), pTwo.getStat('gen'))+1));
+	var kidHed = new Head(kidName);
+	var pHedAvg = (pOne.getStat('head').getScore() + pTwo.getStat('head').getScore())/2;
+	kidHed.breed(pHedAvg);
+	var kid = new Fighter(kidName, kidArm, kidBdy, kidLeg, kidHed, (Math.max(pOne.getStat('gen'), pTwo.getStat('gen'))+1));
 	return kid;
 }
 function bp_util_mixNames(parentOne, parentTwo){

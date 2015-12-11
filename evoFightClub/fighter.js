@@ -1,11 +1,13 @@
 var Arm = require('./parts/arms').Arm;
 var Body = require('./parts/body').Body;
 var Mover = require('./parts/mover').Mover;
+var Head = require('./parts/head').Head;
 
-function Fighter(name, arm, body, mover, generation){
+function Fighter(name, arm, body, mover, head, generation){
 	this.name = name;
 	this.arms = arm;
 	this.body = body;
+	this.head = head;
 	this.legs = mover;
 	this.currHp = this.body.getHealth();
 	this.score = ((this.legs.getScore() + this.body.getScore() + this.arms.getScore()) / 3);
@@ -38,6 +40,10 @@ function fighter_getInfo(){
 
 function fighter_getStat(what){
 	switch(what){
+		case 'dodge':
+			return this.head.getReflexes();
+		case 'head':
+			return this.head;
 		case 'gen':
 			return this.generation;
 		case 'victories':
@@ -59,7 +65,13 @@ function fighter_getStat(what){
 }
 
 function fighter_getAttacked(opposingArms){
-	this.currHp -= opposingArms.getDamage();
+	var rngNum = Math.random() * 100;
+	rngNum = Math.floor(rngNum);
+	if(rngNum > this.getStat('dodge')){
+		this.currHp -= opposingArms.getDamage();
+	} else {
+		console.log(' * '+this.name+' dodged! * ')
+	}
 }
 
 function fighter_attack(tgt){
@@ -75,6 +87,7 @@ function fighter_recycle(){
 		name: this.name,
 		arms: this.arms,
 		body: this.body,
+		head: this.head,
 		legs: this.legs,
 		score: this.score,
 		gen: this.generation
@@ -85,7 +98,8 @@ function fighter_util_mk(name){
 	var fArm = new Arm(name);
 	var fBody = new Body(name);
 	var fLegs = new Mover(name);
-	return new Fighter(name, fArm, fBody, fLegs, 1);
+	var fHead = new Head(name);
+	return new Fighter(name, fArm, fBody, fLegs, fHead, 1);
 }
 
 module.exports = {
