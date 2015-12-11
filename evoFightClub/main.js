@@ -10,6 +10,8 @@ var currInterval = -1;
 var genMax = 1;
 var currGen = 1;
 var maxFighters = -1;
+
+var sleep = require('sleep');
 require('console.table');
 var currentPool = new Array();
 var nextPool = new Array();
@@ -121,13 +123,13 @@ function getStarted(game){
     
   }
   if(currentPool.length == 1){
-    var luckyFighter = currentPool.pop();
+    var luckyFighter = currentPool.shift();
     nextPool.push(luckyFighter);
     currentPool = nextPool;
     nextPool = new Array();
   }
-  var fOne = currentPool.pop();
-  var fTwo = currentPool.pop();
+  var fOne = currentPool.shift();
+  var fTwo = currentPool.shift();
   currFight = new FightClub(fOne, fTwo);
   currInterval = setInterval(runTurn, 2*1000);
   runTurn();
@@ -150,7 +152,7 @@ function runTurn(){
     breedingPool.addFighter(loser);
     winner.victory();
     if(currentPool.length == 0 && nextPool.length == 0){
-      breedingPool.addFighter(winner);
+      //breedingPool.addFighter(winner);
       pastWinners.push(winner);
     }
     nextPool.push(winner);
@@ -168,3 +170,10 @@ function cleanUp(){
 }
 
 restart();
+
+function util_log(data){
+  console.log();
+	console.log(data);
+	console.log();
+	sleep.sleep(5);
+}

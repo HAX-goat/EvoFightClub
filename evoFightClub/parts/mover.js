@@ -23,11 +23,7 @@ function mover_getScore(){
 function mover_breed(parentsAverageScore){
 	// should return a mover with score of approx. parentsAverageScore
 	// so, change speed by doing 
-	if(random.bool(50)){ // +
-		this.speed = parentsAverageScore*(this.BASE/2) + (random.integer(0,this.BASE/2));
-	} else {						// -
-		this.speed = parentsAverageScore*(this.BASE/2) - (random.integer(0,this.BASE/2));
-	}
+	this.speed = parentsAverageScore + (random.integer(-1,1) * (random.real(0.1, 0.4, true)*this.BASE));
 	this.score = this.speed/(this.BASE/2);
 }
 

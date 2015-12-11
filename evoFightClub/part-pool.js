@@ -22,6 +22,7 @@ BreedingPool.prototype.breed = bp_breed_new;
 BreedingPool.prototype.getNewFighter = bp_stealKid;
 
 function bp_addFighter(dedDood){
+	
 	this.breedingFighters.push(dedDood);
 	//this.breed();
 }
@@ -33,13 +34,14 @@ function bp_breed_new(){
 	this.breedingFighters.sort(bp_util_compare_victories);
 	
 	while(this.newKidsOnTheBlock.length < this.maxFighters){
-		var pOne = this.breedingFighters.pop();
-		//console.log(util.inspect(pOne));
+		var pOne = this.breedingFighters.shift();
+		
 		var oneWins = Math.max(1, pOne.getStat('victories'));
 		for(var idx = 0; idx < oneWins && idx < this.breedingFighters.length; idx++){
 			this.newKidsOnTheBlock.push(bp_util_breed(pOne, this.breedingFighters[idx]));
 		}
 	}
+	this.newKidsOnTheBlock = bp_util_arrayShuffle(this.newKidsOnTheBlock);
 }
 
 function bp_breed(){
@@ -55,7 +57,6 @@ function bp_breed(){
 	var parents = new Array();
 	parents.push(this.breedingFighters.pop());
 	parents.push(this.breedingFighters.pop());
-	var kidNames = new Array();
 	this.newKidsOnTheBlock.push(bp_util_breed(parents[0], parents[1]));
 	this.newKidsOnTheBlock.push(bp_util_breed(parents[1], parents[0]));
 	
@@ -64,8 +65,7 @@ function bp_breed(){
 function bp_stealKid(){
 	
 	if(this.newKidsOnTheBlock.length > 0){
-		this.newKidsOnTheBlock = bp_util_arrayShuffle(this.newKidsOnTheBlock);
-		return this.newKidsOnTheBlock.pop();
+		return this.newKidsOnTheBlock.shift();
 	} else {
 		return -80085;
 	}
@@ -88,13 +88,23 @@ function bp_util_breed(pOne, pTwo){
 	return kid;
 }
 function bp_util_mixNames(parentOne, parentTwo){
+		
 	//decide new length
 	var oneFirst = random.bool(50);
 	var numberONE = oneFirst ? parentOne : parentTwo;
-	var numberTWO = oneFirst ? parentTwo : parentOne;
-	var kidLength = Math.max(numberONE.getStat('name').length, numberTWO.getStat('name').length);
-	var kidName = numberONE.getStat('name').substr(0, Math.min((kidLength/2), numberONE.getStat('name').length));
-	kidName += numberTWO.getStat('name').substr(Math.min((kidLength/2), (numberTWO.getStat('name').length/2)));
+	var numberTWO = numberONE == parentOne ? parentTwo : parentOne;
+	var kidLength = Math.min(numberONE.getStat('name').length, numberTWO.getStat('name').length);
+	var kidName = '';
+	for(var i = 0; i < kidLength; i++){
+		if(i % 2 === 0){
+			kidName += numberONE.getStat('name').charAt(i);
+		} else {
+			kidName += numberTWO.getStat('name').charAt(i);
+		}
+		console.log('___kid: '+kidName);
+	}
+	// var kidName = numberONE.getStat('name').substr(0, Math.min((kidLength/2), numberONE.getStat('name').length));
+	// kidName += numberTWO.getStat('name').substr(Math.min((kidLength/2), (numberTWO.getStat('name').length/2)));
 	return kidName;
 }
 
