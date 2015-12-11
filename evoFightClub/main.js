@@ -14,13 +14,13 @@ require('console.table');
 
 
 
-function mkF(nem) {
+function makeFighter(nem) {
   fighters.push(fght.makeFighter(nem));
   //console.log('len: '+fighters.length);
   //rl.prompt();
 }
 
-function readyState(){
+function readyMenu(){
   prompt.message = "Ready? (y/n or q for Quit)";
   prompt.get('ready', function(err, rdy){
         switch(rdy.ready){
@@ -39,15 +39,15 @@ function readyState(){
         }
       });
 }
-function recurse(){
+function getFighters(){
   prompt.message = "Name";
   prompt.get('name', function(err, nameRes){
-    mkF(nameRes.name);
+    makeFighter(nameRes.name);
     //console.log('len: '+fighters.length + ' | tgt: '+maxFighters);
     if(fighters.length == maxFighters){
-      readyState();
+      readyMenu();
     }else{
-      recurse();
+      getFighters();
     }
   });
 }
@@ -62,7 +62,7 @@ function restart(){
     prompt.get('fighters', function (err, fAnsw) {
       maxFighters = fAnsw.fighters;
       console.log('Enter '+maxFighters+' names, separated by [ENTER].');
-      recurse();
+      getFighters();
       
     });
   });
@@ -98,7 +98,7 @@ function getStarted(game){
   currInterval = setInterval(runTurn, 8*1000);
   runTurn();
 }
-function cClear(){
+function util_clearConsole(){
   var lines = process.stdout.getWindowSize()[1];
   for(var i = 0; i < lines; i++) {
       console.log('\r\n');
@@ -107,7 +107,7 @@ function cClear(){
 function runTurn(){
   var stat = currFight.status();
   if(stat.one.getStat('hp') <= 0 || stat.two.getStat('hp') <= 0){
-    cClear();
+    util_clearConsole();
     var winner = (stat.one.getStat('hp') <= 0 ? stat.two : stat.one);
     var loser = (stat.one.getStat('hp') <= 0 ? stat.one : stat.two);
     console.log('Victory!! Fighter '+ winner.getStat('name')  +' won in round ' + stat.round);
@@ -116,7 +116,7 @@ function runTurn(){
     getStarted(currGen);
     return;
   }
-  cClear();
+  util_clearConsole();
   console.log('Round '+stat.round);
   console.table([stat.one.getInfo(), stat.two.getInfo()]);
   currFight.progressTurn();
