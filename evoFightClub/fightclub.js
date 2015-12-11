@@ -16,6 +16,7 @@
 // 	When evolving a new fighter, it constructs itself from data in the pool.
 //  Current version uses 16 fighters, and pits them against eachother in duels to the DEATH (or at least to depletion of their health)
 //
+
 var fighters = new Array();
 var breedingPool = new (require('./part-pool')).BreedingPool();
 var Fightr = require('./fighter').Fighter;
