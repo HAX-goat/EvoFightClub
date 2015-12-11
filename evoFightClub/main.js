@@ -3,13 +3,16 @@ var fighters = new Array();
 var Fighter = require('./fighter').Fighter;
 var fght = require('./fighter');
 var FightClub = require('./fightclub').FightClub;
-var breedingPool = new (require('./part-pool')).BreedingPool();
+var BP = require('./part-pool').BreedingPool;
+var breedingPool = null;
 var currFight = null;
 var currInterval = -1;
-var genGap = 1;
+var genMax = 1;
 var currGen = 1;
 var maxFighters = -1;
 require('console.table');
+var currentPool = new Array();
+var nextPool = new Array();
 
 
 
@@ -54,13 +57,16 @@ function getFighters(){
 function restart(){
   console.log('Breeding Fight Club v1');
   console.log();
+  currentPool = new Array();
+  nextPool = new Array();
   
   prompt.message = "Enter amount of";
   prompt.start();
   prompt.get('generations', function (err, result) {
-    genGap = result.generations;
+    genMax = result.generations;
     prompt.get('fighters', function (err, fAnsw) {
       maxFighters = fAnsw.fighters;
+      breedingPool = new BP(maxFighters);
       console.log('Enter '+maxFighters+' names, separated by [ENTER].');
       getFighters();
       
@@ -76,9 +82,10 @@ function util_arrayShuffle(o){
 function getStarted(game){
   if(game === 0){
     fighters = util_arrayShuffle(fighters);
+    currentPool = fighters;
   }
-  if(fighters.length <= 1){
-    if(currGen > genGap){
+  if(currentPool.length == 0){
+    if(currGen > genMax){
       console.log('**************');
       console.log('*HALL OF FAME*');
       console.log('**************');
@@ -92,20 +99,34 @@ function getStarted(game){
       restart();
       return;
     }
-    currGen++;
+    if(nextPool.length == 1){
+      breedingPool.addFighter(nextPool[0]);
+      currGen++;
     
-    //bring in the kids!
-    var newFighter = breedingPool.getNewFighter();
-    while(newFighter !== -80085 && fighters.length < maxFighters){
-      fighters.push(newFighter);
-      newFighter = breedingPool.getNewFighter();
+      //bring in the kids!
+      breedingPool.breed();
+      var newFighter = breedingPool.getNewFighter();
+      while(newFighter !== -80085 && currentPool.length < maxFighters){
+        currentPool.push(newFighter);
+        newFighter = breedingPool.getNewFighter();
+      }
+      currentPool = util_arrayShuffle(currentPool);
+    } else {
+      currentPool = nextPool;
+      nextPool = new Array();
     }
-    fighters = util_arrayShuffle(fighters);
+    
   }
-  var fOne = fighters.pop();
-  var fTwo = fighters.pop();
+  if(currentPool.length == 1){
+    var luckyFighter = currentPool.pop();
+    nextPool.push(luckyFighter);
+    currentPool = nextPool;
+    nextPool = new Array();
+  }
+  var fOne = currentPool.pop();
+  var fTwo = currentPool.pop();
   currFight = new FightClub(fOne, fTwo);
-  currInterval = setInterval(runTurn, 8*1000);
+  currInterval = setInterval(runTurn, 2*1000);
   runTurn();
 }
 function util_clearConsole(){
@@ -124,12 +145,12 @@ function runTurn(){
     console.log('Victory!! Fighter '+ winner.getStat('name')  +' won in round ' + stat.round);
     clearInterval(currInterval);
     breedingPool.addFighter(loser);
-    if(fighters.length == 0){
-      breedingPool.push(winner);
+    winner.victory();
+    if(currentPool.length == 0 && nextPool.length == 0){
+      breedingPool.addFighter(winner);
       pastWinners.push(winner);
-    } else {
-      fighters.push(winner);
     }
+    nextPool.push(winner);
     getStarted(currGen);
     return;
   }

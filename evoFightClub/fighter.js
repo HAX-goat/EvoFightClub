@@ -10,12 +10,20 @@ function Fighter(name, arm, body, mover, generation){
 	this.currHp = this.body.getHealth();
 	this.score = ((this.legs.getScore() + this.body.getScore() + this.arms.getScore()) / 3);
 	this.generation = generation;
+	this.victories = 0;
+}
+
+function fighter_reset(){
+	this.currHp = this.body.getHealth();
+	return this;
 }
 
 Fighter.prototype.getInfo = fighter_getInfo;
 Fighter.prototype.getStat = fighter_getStat;
 Fighter.prototype.getAttacked = fighter_getAttacked;
 Fighter.prototype.attack = fighter_attack;
+Fighter.prototype.reset = fighter_reset;
+Fighter.prototype.victory = fighter_victory;
 
 function fighter_getInfo(){
 	return { 
@@ -30,6 +38,8 @@ function fighter_getInfo(){
 
 function fighter_getStat(what){
 	switch(what){
+		case 'victories':
+			return this.victories;
 		case 'name':
 			return this.name;
 		case 'arms':
@@ -52,6 +62,10 @@ function fighter_getAttacked(opposingArms){
 
 function fighter_attack(tgt){
 	tgt.getAttacked(this.arms);
+}
+
+function fighter_victory(){
+	this.victories += 1;
 }
 
 function fighter_recycle(){

@@ -18,11 +18,11 @@
 //
 
 var fighters = new Array();
-var breedingPool = new (require('./part-pool')).BreedingPool();
+//var breedingPool = new (require('./part-pool')).BreedingPool();
 var Fightr = require('./fighter').Fighter;
 function FightClub(fighterOne, fighterTwo){
-	this.fighterOne = fighterOne;
-	this.fighterTwo = fighterTwo;
+	this.fighterOne = fighterOne.reset();
+	this.fighterTwo = fighterTwo.reset();
 	this.round = 1;
 	this.turn = 0;
 }

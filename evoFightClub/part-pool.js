@@ -5,33 +5,52 @@ var Mover = require('./parts/mover').Mover;
 
 var Fighter = require('./fighter').Fighter;
 
-function BreedingPool(){ 
+var util = require('util');
+
+function BreedingPool(max){ 
+	this.maxFighters = max;
 	//	BreedingPool - Where all defeated fighters breed :D
-	this.defeatedFighters = new Array();
+	this.breedingFighters = new Array();
 	this.newKidsOnTheBlock = new Array();
 }
 BreedingPool.prototype.addFighter = bp_addFighter;
-BreedingPool.prototype.breed = bp_breed;
+BreedingPool.prototype.breed = bp_breed_new;
 BreedingPool.prototype.getNewFighter = bp_stealKid;
 
 function bp_addFighter(dedDood){
-	this.defeatedFighters.push(dedDood);
-	this.breed();
+	this.breedingFighters.push(dedDood);
+	//this.breed();
+}
+function bp_util_compare_victories(a, b){
+	//console.log('a: '+a.getStat('name')+', b: '+b.getStat('name') + ' | b-a: '+(b.getStat('victories') - a.getStat('victories')));
+	return b.getStat('victories') - a.getStat('victories');
+}
+function bp_breed_new(){
+	this.breedingFighters.sort(bp_util_compare_victories);
+	
+	while(this.newKidsOnTheBlock.length < this.maxFighters){
+		var pOne = this.breedingFighters.pop();
+		//console.log(util.inspect(pOne));
+		var oneWins = Math.max(1, pOne.getStat('victories'));
+		for(var idx = 0; idx < oneWins && idx < this.breedingFighters.length; idx++){
+			this.newKidsOnTheBlock.push(bp_util_breed(pOne, this.breedingFighters[idx]));
+		}
+	}
 }
 
 function bp_breed(){
-	if(this.defeatedFighters.length % 2 !== 0 && this.defeatedFighters.length === 1){
+	if(this.breedingFighters.length % 2 !== 0 && this.breedingFighters.length === 1){
 		//only one poor dead dude, no breeding for him!
 		return -1;
 	}
 	//randomize parents, no cartesian product kids tyvm
 	//two parents gives two kids
 	//because no declining populations! :D
-	this.defeatedFighters = bp_util_arrayShuffle(this.defeatedFighters);
+	this.breedingFighters = bp_util_arrayShuffle(this.breedingFighters);
 	
 	var parents = new Array();
-	parents.push(this.defeatedFighters.pop());
-	parents.push(this.defeatedFighters.pop());
+	parents.push(this.breedingFighters.pop());
+	parents.push(this.breedingFighters.pop());
 	var kidNames = new Array();
 	this.newKidsOnTheBlock.push(bp_util_breed(parents[0], parents[1]));
 	this.newKidsOnTheBlock.push(bp_util_breed(parents[1], parents[0]));
@@ -39,6 +58,7 @@ function bp_breed(){
 }
 
 function bp_stealKid(){
+	
 	if(this.newKidsOnTheBlock.length > 0){
 		this.newKidsOnTheBlock = bp_util_arrayShuffle(this.newKidsOnTheBlock);
 		return this.newKidsOnTheBlock.pop();
